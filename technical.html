@@ -15,164 +15,211 @@
 
         <nav class="nav-buttons">
             <a href="proposal.html" class="nav-btn">Written Proposal</a>
-            <a href="technical.html" class="nav-btn">Technical Docs</a>
+            <a href="technical.html" class="nav-btn active">Technical Docs</a>
         </nav>
     </div>
 </header>
 
 <div class="container">
 
-    <h1 class="page-title">Technical Documentation</h1>
-
-    <section class="card">
-        <h2>Architecture Overview</h2>
+<section class="hero-banner">
+    <div class="hero-content">
+        <h1>Technical Architecture & System Design</h1>
         <p>
-            ShelfChef follows Clean Architecture principles with MVVM for presentation.
-            The system is separated into Presentation, Domain, and Data layers to ensure
-            maintainability, scalability, and testability.
+            Clean Architecture, reactive state management, and scalable monetization
+            powering ShelfChef.
         </p>
+    </div>
+</section>
 
-        <ul>
-            <li><strong>Presentation Layer:</strong> Jetpack Compose UI + ViewModels using StateFlow</li>
-            <li><strong>Domain Layer:</strong> Business models and feature gating logic</li>
-            <li><strong>Data Layer:</strong> Room database, API services, repositories</li>
-        </ul>
 
-        <p>
-            All external services are abstracted through repository interfaces,
-            allowing clean separation of concerns and future portability.
-        </p>
-    </section>
+<!-- ================= ARCHITECTURE ================= -->
 
-    <section class="card">
-        <h2>Tech Stack</h2>
-        <ul>
-            <li><strong>Language:</strong> Kotlin</li>
-            <li><strong>UI Framework:</strong> Jetpack Compose (Material 3)</li>
-            <li><strong>Architecture:</strong> Clean Architecture + MVVM</li>
-            <li><strong>Dependency Injection:</strong> Hilt</li>
-            <li><strong>Local Database:</strong> Room (SQLite)</li>
-            <li><strong>Networking:</strong> Retrofit + OkHttp</li>
-            <li><strong>JSON Parsing:</strong> Gson</li>
-            <li><strong>Web Scraping:</strong> Jsoup + Schema.org parsing</li>
-            <li><strong>AI Integration:</strong> OpenAI GPT-4o-mini</li>
-            <li><strong>Authentication:</strong> Firebase Auth</li>
-            <li><strong>Cloud Sync:</strong> Firebase Firestore</li>
-            <li><strong>Barcode Scanning:</strong> Google ML Kit + CameraX</li>
-            <li><strong>Subscriptions:</strong> RevenueCat SDK + RevenueCat UI</li>
-            <li><strong>Async:</strong> Kotlin Coroutines + Flow</li>
-        </ul>
-    </section>
+<section class="card">
+    <h2>Architecture Overview</h2>
 
-    <section class="card">
-        <h2>RevenueCat Integration Deep Dive</h2>
+    <p>
+        ShelfChef follows Clean Architecture principles combined with MVVM.
+        The system is designed to isolate business logic from UI and external services,
+        ensuring scalability, maintainability, and long-term extensibility.
+    </p>
 
-        <p>
-            RevenueCat powers the entire monetization system, including subscription management,
-            entitlement tracking, and cross-device purchase restoration.
-        </p>
+    <h3>Layer Responsibilities</h3>
+    <ul>
+        <li><strong>Presentation Layer:</strong> Jetpack Compose UI + ViewModels using StateFlow.</li>
+        <li><strong>Domain Layer:</strong> Core business models, use cases, and feature gating logic.</li>
+        <li><strong>Data Layer:</strong> Repository implementations, Room database, API services, and cloud integrations.</li>
+    </ul>
 
-        <h3>Entitlement Model</h3>
-        <p>
-            A single entitlement called <strong>"ShelfChef Pro"</strong> controls access
-            to premium functionality.
-        </p>
+    <h3>Dependency Direction</h3>
+    <p>
+        Dependencies flow inward. The Domain layer defines interfaces.
+        The Data layer implements them. The Presentation layer depends only on Domain abstractions.
+        This prevents framework or API coupling from leaking into business logic.
+    </p>
 
-        <h3>Subscription Packages</h3>
-        <ul>
-            <li>Monthly subscription</li>
-            <li>Yearly subscription with savings messaging</li>
-            <li>Lifetime one-time purchase</li>
-        </ul>
+    <h3>System Architecture Diagram</h3>
 
-        <h3>Feature Gating System</h3>
-        <p>
-            A centralized <code>FeatureGateManager</code> observes subscription state via Flow.
-            ViewModels query the manager before executing gated features.
-        </p>
+    <svg width="100%" height="380" viewBox="0 0 800 380">
 
-        <ul>
-            <li>Unlimited recipe imports</li>
-            <li>AI powered smart suggestions</li>
-            <li>Recipe scaling</li>
-            <li>Cloud sync</li>
-        </ul>
+        <!-- Presentation -->
+        <rect x="100" y="40" width="600" height="70" fill="#E65100" rx="10"/>
+        <text x="400" y="85" text-anchor="middle" fill="white" font-size="18">
+            Presentation Layer (Compose UI + ViewModels)
+        </text>
 
-        <h3>User Identity Synchronization</h3>
-        <p>
-            Upon Firebase login, the app calls RevenueCat’s logIn method with the Firebase UID.
-            On logout, it resets to anonymous. This ensures subscription entitlements
-            persist across devices.
-        </p>
+        <!-- Domain -->
+        <rect x="150" y="150" width="500" height="70" fill="#2E7D32" rx="10"/>
+        <text x="400" y="195" text-anchor="middle" fill="white" font-size="18">
+            Domain Layer (Models + Use Cases + FeatureGateManager)
+        </text>
 
-        <p>
-            Both custom paywall UI and RevenueCat’s native PaywallDialog are implemented,
-            enabling remote configuration and experimentation.
-        </p>
-    </section>
+        <!-- Data -->
+        <rect x="200" y="260" width="400" height="70" fill="#444" rx="10"/>
+        <text x="400" y="305" text-anchor="middle" fill="white" font-size="18">
+            Data Layer (Repositories)
+        </text>
 
-    <section class="card">
-        <h2>AI and Recipe Parsing Strategy</h2>
+        <!-- Arrows -->
+        <line x1="400" y1="110" x2="400" y2="150" stroke="#000" stroke-width="2"/>
+        <line x1="400" y1="220" x2="400" y2="260" stroke="#000" stroke-width="2"/>
 
-        <p>
-            Recipe importing follows a layered extraction strategy:
-        </p>
+    </svg>
 
-        <ol>
-            <li>Attempt structured extraction using Jsoup and Schema.org metadata.</li>
-            <li>If structured data fails, send raw HTML to GPT-4o-mini for parsing.</li>
-        </ol>
+    <p>
+        This layered design isolates business rules, simplifies testing,
+        and enables portability to additional platforms such as web or React Native.
+    </p>
+</section>
 
-        <p>
-            This hybrid approach maximizes reliability while controlling API cost.
-            GPT-4o-mini is also used for generating intelligent recipe suggestions
-            based on pantry inventory.
-        </p>
-    </section>
+<!-- ================= STATE MANAGEMENT ================= -->
 
-    <section class="card">
-        <h2>Offline First Design</h2>
+<section class="card">
+    <h2>State Management Architecture</h2>
 
-        <p>
-            ShelfChef uses Room for local storage, ensuring full functionality
-            without internet connectivity.
-        </p>
+    <p>
+        ShelfChef uses Kotlin Coroutines and StateFlow to implement reactive,
+        lifecycle-aware state management within MVVM.
+    </p>
 
-        <ul>
-            <li>Pantry items stored locally</li>
-            <li>Recipes stored locally</li>
-            <li>Grocery lists stored locally</li>
-        </ul>
+    <ul>
+        <li>Room DAO queries expose Flow streams.</li>
+        <li>Repositories transform and combine data sources.</li>
+        <li>ViewModels expose immutable UI state.</li>
+        <li>Compose observes state using collectAsState().</li>
+    </ul>
 
-        <p>
-            Cloud sync via Firestore is available for Pro users,
-            maintaining consistency across devices.
-        </p>
-    </section>
+    <p>
+        The architecture enforces unidirectional data flow:
+        user events move upward to ViewModels, and state flows downward to the UI.
+        This ensures predictable rendering and reduces inconsistent UI states.
+    </p>
+</section>
 
-    <section class="card">
-        <h2>System Integration Complexity</h2>
+<!-- ================= ERROR HANDLING ================= -->
 
-        <p>
-            ShelfChef integrates multiple external systems:
-        </p>
+<section class="card">
+    <h2>Error Handling Strategy</h2>
 
-        <ul>
-            <li>OpenAI API</li>
-            <li>RevenueCat</li>
-            <li>Firebase Auth</li>
-            <li>Firestore</li>
-            <li>Google ML Kit</li>
-            <li>Open Food Facts API</li>
-            <li>Google Play Console</li>
-        </ul>
+    <h3>Network Resilience</h3>
+    <ul>
+        <li>Retrofit responses wrapped in safe result objects.</li>
+        <li>HTTP failures converted into domain-level errors.</li>
+        <li>Graceful UI messaging for connectivity failures.</li>
+    </ul>
 
-        <p>
-            Coordinating authentication, subscription state, API usage,
-            and offline persistence required careful orchestration
-            and structured state management.
-        </p>
-    </section>
+    <h3>AI Fallback Strategy</h3>
+    <p>
+        Recipe parsing first attempts structured Schema.org extraction.
+        If unavailable, GPT-4o-mini processes raw HTML.
+        If AI fails, users receive clear actionable feedback.
+    </p>
+
+    <h3>Subscription Consistency</h3>
+    <p>
+        RevenueCat entitlement state acts as the single source of truth.
+        No feature is unlocked based solely on local flags.
+    </p>
+</section>
+
+<!-- ================= REVENUECAT ================= -->
+
+<section class="card">
+    <h2>RevenueCat Integration Deep Dive</h2>
+
+    <p>
+        RevenueCat powers subscription management, entitlement validation,
+        cross-device synchronization, and restore functionality.
+    </p>
+
+    <h3>Entitlement Model</h3>
+    <p>
+        A single entitlement, <strong>"ShelfChef Pro"</strong>, governs premium access.
+    </p>
+
+    <h3>Subscription Event Lifecycle</h3>
+    <ol>
+        <li>User selects subscription package.</li>
+        <li>RevenueCat validates receipt and updates entitlement.</li>
+        <li>FeatureGateManager observes entitlement change.</li>
+        <li>Premium features unlock instantly via reactive state updates.</li>
+    </ol>
+
+    <h3>Restore Flow</h3>
+    <p>
+        Restore purchases triggers RevenueCat backend sync,
+        refreshing entitlement state without requiring app restart.
+    </p>
+
+    <h3>Identity Mapping</h3>
+    <p>
+        Firebase UID is passed to RevenueCat logIn().
+        This ensures subscription persistence across devices.
+        Logout resets identity to anonymous.
+    </p>
+</section>
+
+<!-- ================= MONETIZATION ENABLEMENT ================= -->
+
+<section class="card">
+    <h2>Why This Architecture Enables Monetization</h2>
+
+    <p>
+        Monetization is integrated at the Domain layer through a centralized
+        FeatureGateManager rather than enforced only at the UI layer.
+    </p>
+
+    <ul>
+        <li>Free tier limits enforced in business logic.</li>
+        <li>Premium access tied directly to entitlement state.</li>
+        <li>Reactive unlock without manual refresh.</li>
+        <li>Future subscription tiers can be added without restructuring the app.</li>
+    </ul>
+
+    <p>
+        This ensures monetization remains stable, secure, and scalable
+        as new features and pricing experiments are introduced.
+    </p>
+</section>
+
+<!-- ================= TECH STACK ================= -->
+
+<section class="card">
+    <h2>Tech Stack</h2>
+    <ul>
+        <li><strong>Language:</strong> Kotlin</li>
+        <li><strong>UI:</strong> Jetpack Compose (Material 3)</li>
+        <li><strong>Architecture:</strong> Clean Architecture + MVVM</li>
+        <li><strong>DI:</strong> Hilt</li>
+        <li><strong>Database:</strong> Room (SQLite)</li>
+        <li><strong>Networking:</strong> Retrofit + OkHttp</li>
+        <li><strong>AI:</strong> OpenAI GPT-4o-mini</li>
+        <li><strong>Auth & Cloud:</strong> Firebase Auth + Firestore</li>
+        <li><strong>Barcode:</strong> Google ML Kit + CameraX</li>
+        <li><strong>Subscriptions:</strong> RevenueCat SDK + UI</li>
+        <li><strong>Async:</strong> Kotlin Coroutines + Flow</li>
+    </ul>
+</section>
 
 </div>
 
