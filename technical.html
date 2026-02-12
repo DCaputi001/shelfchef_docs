@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShelfChef | Technical Documentation</title>
+<link rel="stylesheet" href="assets/styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<div class="nav">
+    <a href="index.html" class="nav-logo">ShelfChef</a>
+    <div>
+        <a href="proposal.html" class="nav-link">Written Proposal</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1 class="page-title">Technical Documentation</h1>
+
+    <section class="card">
+        <h2>Architecture Overview</h2>
+        <p>
+            ShelfChef follows Clean Architecture principles with MVVM for presentation.
+            The system is separated into Presentation, Domain, and Data layers to ensure
+            maintainability, scalability, and testability.
+        </p>
+
+        <ul>
+            <li><strong>Presentation Layer:</strong> Jetpack Compose UI + ViewModels using StateFlow</li>
+            <li><strong>Domain Layer:</strong> Business models and feature gating logic</li>
+            <li><strong>Data Layer:</strong> Room database, API services, repositories</li>
+        </ul>
+
+        <p>
+            All external services are abstracted through repository interfaces,
+            allowing clean separation of concerns and future portability.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Tech Stack</h2>
+        <ul>
+            <li><strong>Language:</strong> Kotlin</li>
+            <li><strong>UI Framework:</strong> Jetpack Compose (Material 3)</li>
+            <li><strong>Architecture:</strong> Clean Architecture + MVVM</li>
+            <li><strong>Dependency Injection:</strong> Hilt</li>
+            <li><strong>Local Database:</strong> Room (SQLite)</li>
+            <li><strong>Networking:</strong> Retrofit + OkHttp</li>
+            <li><strong>JSON Parsing:</strong> Gson</li>
+            <li><strong>Web Scraping:</strong> Jsoup + Schema.org parsing</li>
+            <li><strong>AI Integration:</strong> OpenAI GPT-4o-mini</li>
+            <li><strong>Authentication:</strong> Firebase Auth</li>
+            <li><strong>Cloud Sync:</strong> Firebase Firestore</li>
+            <li><strong>Barcode Scanning:</strong> Google ML Kit + CameraX</li>
+            <li><strong>Subscriptions:</strong> RevenueCat SDK + RevenueCat UI</li>
+            <li><strong>Async:</strong> Kotlin Coroutines + Flow</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>RevenueCat Integration Deep Dive</h2>
+
+        <p>
+            RevenueCat powers the entire monetization system, including subscription management,
+            entitlement tracking, and cross-device purchase restoration.
+        </p>
+
+        <h3>Entitlement Model</h3>
+        <p>
+            A single entitlement called <strong>"ShelfChef Pro"</strong> controls access
+            to premium functionality.
+        </p>
+
+        <h3>Subscription Packages</h3>
+        <ul>
+            <li>Monthly subscription</li>
+            <li>Yearly subscription with savings messaging</li>
+            <li>Lifetime one-time purchase</li>
+        </ul>
+
+        <h3>Feature Gating System</h3>
+        <p>
+            A centralized <code>FeatureGateManager</code> observes subscription state via Flow.
+            ViewModels query the manager before executing gated features.
+        </p>
+
+        <ul>
+            <li>Unlimited recipe imports</li>
+            <li>AI powered smart suggestions</li>
+            <li>Recipe scaling</li>
+            <li>Cloud sync</li>
+        </ul>
+
+        <h3>User Identity Synchronization</h3>
+        <p>
+            Upon Firebase login, the app calls RevenueCat’s logIn method with the Firebase UID.
+            On logout, it resets to anonymous. This ensures subscription entitlements
+            persist across devices.
+        </p>
+
+        <p>
+            Both custom paywall UI and RevenueCat’s native PaywallDialog are implemented,
+            enabling remote configuration and experimentation.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>AI and Recipe Parsing Strategy</h2>
+
+        <p>
+            Recipe importing follows a layered extraction strategy:
+        </p>
+
+        <ol>
+            <li>Attempt structured extraction using Jsoup and Schema.org metadata.</li>
+            <li>If structured data fails, send raw HTML to GPT-4o-mini for parsing.</li>
+        </ol>
+
+        <p>
+            This hybrid approach maximizes reliability while controlling API cost.
+            GPT-4o-mini is also used for generating intelligent recipe suggestions
+            based on pantry inventory.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Offline First Design</h2>
+
+        <p>
+            ShelfChef uses Room for local storage, ensuring full functionality
+            without internet connectivity.
+        </p>
+
+        <ul>
+            <li>Pantry items stored locally</li>
+            <li>Recipes stored locally</li>
+            <li>Grocery lists stored locally</li>
+        </ul>
+
+        <p>
+            Cloud sync via Firestore is available for Pro users,
+            maintaining consistency across devices.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>System Integration Complexity</h2>
+
+        <p>
+            ShelfChef integrates multiple external systems:
+        </p>
+
+        <ul>
+            <li>OpenAI API</li>
+            <li>RevenueCat</li>
+            <li>Firebase Auth</li>
+            <li>Firestore</li>
+            <li>Google ML Kit</li>
+            <li>Open Food Facts API</li>
+            <li>Google Play Console</li>
+        </ul>
+
+        <p>
+            Coordinating authentication, subscription state, API usage,
+            and offline persistence required careful orchestration
+            and structured state management.
+        </p>
+    </section>
+
+</div>
+
+<footer>
+    © 2026 ShelfChef • Technical Documentation
+</footer>
+
+</body>
+</html>
