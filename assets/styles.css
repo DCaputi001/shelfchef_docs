@@ -61,3 +61,61 @@ h1 {
     background-color: #2E7D32;
     color: white;
 }
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-logo {
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    color: #2E7D32;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #E65100;
+    font-weight: 600;
+}
+
+.container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #2E7D32;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+    color: #E65100;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-top: 20px;
+    color: #2E7D32;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 14px;
+    color: #777;
+}
